@@ -1,62 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact Car Owner</title>
-<style>
-body { font-family: sans-serif; padding: 20px; text-align: center; }
-form { max-width: 300px; margin: 0 auto; }
-textarea { width: 100%; height: 100px; margin-bottom: 10px; }
-button { padding: 10px 20px; background-color: #0088cc; color: white; border: none; cursor: pointer; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Car Owner</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+        form { max-width: 300px; margin: 0 auto; }
+        textarea { width: 100%; height: 100px; margin-bottom: 10px; }
+        button { padding: 10px 20px; background-color: #0088cc; color: white; border: none; cursor: pointer; }
+    </style>
 </head>
 <body>
 
-<h2>Send a Message to the Car Owner</h2>
-<form id="messageForm">
-<textarea id="message" placeholder="Type your message here..." required></textarea>
-<br>
-<button type="submit">Send Message</button>
-</form>
+    <h2>Send a Message to the Car Owner</h2>
+    <form id="messageForm">
+        <textarea id="message" placeholder="Type your message here..." required></textarea>
+        <br>
+        <button type="submit">Send Message</button>
+    </form>
 
-<p id="status"></p>
+    <p id="status"></p>
 
-<script>
-const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
-const CHAT_ID = 'YOUR_CHAT_ID_HERE';
+    <script>
+        // YOUR TELEGRAM DETAILS
+        const BOT_TOKEN = '9126194997:AAGkzFvSpRqUqEwcCil0VSzizXxgT7ka-p8';
+        const CHAT_ID = '8578161903';
 
-document.getElementById('messageForm').addEventListener('submit', async function(e) {
-e.preventDefault();
+        document.getElementById('messageForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const message = document.getElementById('message').value;
+            const statusText = document.getElementById('status');
+            
+            statusText.innerText = 'Sending...';
 
-const message = document.getElementById('message').value;
-const statusText = document.getElementById('status');
+            const url = `<unsafe_url>https://api.telegram.org/bot${BOT_TOKEN}/sendMessage</unsafe_url>`;
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: `🚗 New message from your car QR code:\n\n${message}`
+                    })
+                });
 
-statusText.innerText = 'Sending...';
-
-const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-
-try {
-const response = await fetch(url, {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-chat_id: CHAT_ID,
-text: `🚗 New message from your car QR code:\n\n${message}`
-})
-});
-
-if (response.ok) {
-statusText.innerText = 'Message sent successfully!';
-document.getElementById('message').value = '';
-} else {
-statusText.innerText = 'Error sending message.';
-}
-} catch (error) {
-statusText.innerText = 'Network error. Please try again.';
-}
-});
-</script>
+                if (response.ok) {
+                    statusText.innerText = 'Message sent successfully!';
+                    document.getElementById('message').value = '';
+                } else {
+                    statusText.innerText = 'Error sending message.';
+                }
+            } catch (error) {
+                statusText.innerText = 'Network error. Please try again.';
+            }
+        });
+    </script>
 
 </body>
 </html>
