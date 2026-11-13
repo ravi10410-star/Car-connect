@@ -53,7 +53,10 @@
                 } else {
                     statusText.innerText = 'Error sending message.';
                 }
-            } catch (error) {
+            } catch (error) } catch (error) {
+    console.log("Error details:", error);
+    statusText.innerText = 'Network error. Please try again.';
+} {
                 statusText.innerText = 'Network error. Please try again.';
             }
         });
