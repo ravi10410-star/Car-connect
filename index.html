@@ -30,12 +30,15 @@
         document.getElementById('messageForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            alert('Button Clicked! Sending message...');
+            
             const message = document.getElementById('message').value;
             const statusText = document.getElementById('status');
             
             statusText.innerText = 'Sending...';
+            console.log("Attempting to send message:", message);
 
-            const url = `<unsafe_url>https://api.telegram.org/bot${BOT_TOKEN}/sendMessage</unsafe_url>`;
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
             
             try {
                 const response = await fetch(url, {
@@ -47,20 +50,14 @@
                     })
                 });
 
+                console.log("Response status:", response.status);
+
                 if (response.ok) {
                     statusText.innerText = 'Message sent successfully!';
                     document.getElementById('message').value = '';
+                    alert('Success! Message sent to Telegram.');
                 } else {
+                    const errorData = await response.json();
+                    console.log("Telegram Error:", errorData);
                     statusText.innerText = 'Error sending message.';
-                }
-            } catch (error) } catch (error) {
-    console.log("Error details:", error);
-    statusText.innerText = 'Network error. Please try again.';
-} {
-                statusText.innerText = 'Network error. Please try again.';
-            }
-        });
-    </script>
-
-</body>
-</html>
+                    alert('Error: ' + (errorData.description ||
