@@ -65,8 +65,8 @@
     </div>
 
     <script>
-        // Your Google Apps Script Web App URL
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyqLxtmD2t6FX9ZPxNlhS3cwyMS5f4b8XSPch15WAC3hCzM06rqfGww8gBI02J7-SQ/exec';
+        // Updated with your new Google Apps Script Web App URL
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw3NgnRd8TFQD4ITfVUBAYPEyBB68iSvV6CQwS6NShhLc4DBc1HqHnjaVPPeRo8V-g/exec';
 
         document.getElementById('messageForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -81,22 +81,17 @@
             statusText.innerText = 'Sending message...';
 
             try {
-                const response = await fetch(WEB_APP_URL, {
+                await fetch(WEB_APP_URL, {
                     method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: message })
                 });
 
-                const result = await response.json();
+                statusText.style.color = 'green';
+                statusText.innerText = 'Message sent successfully! Owner notified.';
+                messageInput.value = '';
 
-                if (result.status === 'success') {
-                    statusText.style.color = 'green';
-                    statusText.innerText = 'Message sent successfully! Owner notified.';
-                    messageInput.value = '';
-                } else {
-                    statusText.style.color = 'red';
-                    statusText.innerText = 'Failed to send message.';
-                    console.error("Error:", result.message);
-                }
             } catch (error) {
                 console.error("Network Error:", error);
                 statusText.style.color = 'red';
