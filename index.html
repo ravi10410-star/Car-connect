@@ -1,33 +1,108 @@
-<script>
-    // Paste your complete Web App URL here
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyqLxtmD2t6FX9ZPxNlhS3cwyMS5f4b8XSPch15WAC3hCzM06rqfGww8gBI02J7-SQ/exec';
-
-    document.getElementById('messageForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const message = document.getElementById('message').value;
-        const statusText = document.getElementById('status');
-        
-        statusText.innerText = 'Sending message...';
-
-        try {
-            const response = await fetch(WEB_APP_URL, {
-                method: 'POST',
-                body: JSON.stringify({ message: message })
-            });
-
-            const result = await response.json();
-
-            if (result.status === 'success') {
-                statusText.innerText = 'Message sent successfully!';
-                document.getElementById('message').value = '';
-            } else {
-                statusText.innerText = 'Failed to send message.';
-                console.error("Error:", result.message);
-            }
-        } catch (error) {
-            console.error("Network Error:", error);
-            statusText.innerText = 'Connection error. Please try again.';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Car Owner</title>
+    <style>
+        body { 
+            font-family: sans-serif; 
+            padding: 20px; 
+            text-align: center; 
+            background-color: #f4f4f9;
         }
-    });
-</script>
+        .container {
+            max-width: 350px; 
+            margin: 50px auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        textarea { 
+            width: 100%; 
+            height: 120px; 
+            margin-bottom: 15px; 
+            padding: 10px; 
+            box-sizing: border-box; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            resize: none;
+        }
+        button { 
+            width: 100%;
+            padding: 12px; 
+            background-color: #0088cc; 
+            color: white; 
+            border: none; 
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer; 
+        }
+        button:hover {
+            background-color: #006699;
+        }
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🚗 Contact Car Owner</h2>
+        <p style="font-size: 14px; color: #666;">Scan successful! Leave a note for the car owner below.</p>
+        
+        <form id="messageForm">
+            <textarea id="message" placeholder="Type your message here (e.g., You are parked blocking my driveway)..." required></textarea>
+            <br>
+            <button type="submit">Send Message</button>
+        </form>
+
+        <p id="status"></p>
+    </div>
+
+    <script>
+        // Your Google Apps Script Web App URL
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyqLxtmD2t6FX9ZPxNlhS3cwyMS5f4b8XSPch15WAC3hCzM06rqfGww8gBI02J7-SQ/exec';
+
+        document.getElementById('messageForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const messageInput = document.getElementById('message');
+            const statusText = document.getElementById('status');
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+            
+            statusText.style.color = '#0088cc';
+            statusText.innerText = 'Sending message...';
+
+            try {
+                const response = await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ message: message })
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    statusText.style.color = 'green';
+                    statusText.innerText = 'Message sent successfully! Owner notified.';
+                    messageInput.value = '';
+                } else {
+                    statusText.style.color = 'red';
+                    statusText.innerText = 'Failed to send message.';
+                    console.error("Error:", result.message);
+                }
+            } catch (error) {
+                console.error("Network Error:", error);
+                statusText.style.color = 'red';
+                statusText.innerText = 'Connection error. Please try again.';
+            }
+        });
+    </script>
+</body>
+</html>
