@@ -3,99 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Car Owner</title>
+    <title>Thar 4x4 | Secure Owner Dispatch</title>
     <style>
-        body { 
-            font-family: sans-serif; 
-            padding: 20px; 
-            text-align: center; 
-            background-color: #f4f4f9;
+        :root {
+            --bg-dark: #0d0f12;
+            --card-bg: #16191f;
+            --border-color: #262c36;
+            --accent-orange: #ff6b00;
+            --accent-hover: #e05e00;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --input-bg: #101216;
         }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            background-image: linear-gradient(rgba(255,107,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,107,0,0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
         .container {
-            max-width: 350px; 
-            margin: 50px auto; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        textarea { 
-            width: 100%; 
-            height: 120px; 
-            margin-bottom: 15px; 
-            padding: 10px; 
-            box-sizing: border-box; 
-            border: 1px solid #ccc; 
-            border-radius: 4px; 
-            resize: none;
-        }
-        button { 
             width: 100%;
-            padding: 12px; 
-            background-color: #0088cc; 
-            color: white; 
-            border: none; 
+            max-width: 400px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--accent-orange);
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-icon {
+            width: 54px;
+            height: 54px;
+            background: rgba(255, 107, 0, 0.1);
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px auto;
+            color: var(--accent-orange);
+        }
+
+        .vehicle-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: currentColor;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 107, 0, 0.12);
+            color: var(--accent-orange);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 8px;
             border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer; 
+            margin-bottom: 8px;
         }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        select, textarea, input {
+            width: 100%;
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 11px 12px;
+            font-size: 14px;
+            font-family: inherit;
+            margin-bottom: 16px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        select:focus, textarea:focus, input:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff6b00' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 14px;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background-color: var(--accent-orange);
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
         button:hover {
-            background-color: #006699;
+            background-color: var(--accent-hover);
         }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background-color: #374151;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
         #status {
-            margin-top: 15px;
-            font-weight: bold;
-            color: #333;
+            margin-top: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            min-height: 20px;
+        }
+
+        .footer-note {
+            margin-top: 18px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+            font-size: 10px;
+            color: #4b5563;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>🚗 Contact Car Owner</h2>
-        <p style="font-size: 14px; color: #666;">Scan successful! Leave a note for the car owner below.</p>
+        <div class="header">
+            <div class="vehicle-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.04 3H5.81l1.04-3zM19 17H5v-4.66l.12-.34h13.76l.12.34V17z"/>
+                    <circle cx="7.5" cy="14.5" r="1.5"/>
+                    <circle cx="16.5" cy="14.5" r="1.5"/>
+                </svg>
+            </div>
+            <span class="badge">4x4 Direct Dispatch</span>
+            <h2>Thar Owner Contact</h2>
+            <p class="subtitle">Select a quick reason or write a note below.</p>
+        </div>
         
         <form id="messageForm">
-            <textarea id="message" placeholder="Type your message here (e.g., You are parked blocking my driveway)..." required></textarea>
-            <br>
-            <button type="submit">Send Message</button>
+            <label for="quickReason">Quick Select Reason</label>
+            <select id="quickReason">
+                <option value="">-- Choose a preset option --</option>
+                <option value="🚧 Blocked My Exit / Gate! Please move your Thar.">🚧 Blocked My Exit / Gate (Please Move)</option>
+                <option value="🔋 Battery Drain Alert! Your lights are left ON.">🔋 Battery Drain Alert (Lights Left ON)</option>
+                <option value="📐 Trapped In! Need room to reverse / turn.">📐 Trapped In / Need Room to Reverse</option>
+                <option value="🐒 Canopy Occupied! Stray animal / monkey on your vehicle.">🐒 Stray Animal / Monkey on Vehicle</option>
+                <option value="💬 Custom Note / Other Issue">💬 Custom Note / Other Issue</option>
+            </select>
+
+            <label for="message">Message Details</label>
+            <textarea id="message" placeholder="Type your message or location details here..." required></textarea>
+
+            <label for="contactInfo">Your Name / Number (Optional)</label>
+            <input type="text" id="contactInfo" placeholder="e.g. Rahul - 98765XXXXX">
+
+            <button type="submit" id="submitBtn">Transmit Alert</button>
         </form>
 
         <p id="status"></p>
+
+        <div class="footer-note">
+            Secure Encrypted Channel
+        </div>
     </div>
 
     <script>
-        // Updated with your new Google Apps Script Web App URL
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw3NgnRd8TFQD4ITfVUBAYPEyBB68iSvV6CQwS6NShhLc4DBc1HqHnjaVPPeRo8V-g/exec';
+
+        const quickReason = document.getElementById('quickReason');
+        const messageInput = document.getElementById('message');
+        const contactInput = document.getElementById('contactInfo');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusText = document.getElementById('status');
+
+        quickReason.addEventListener('change', function() {
+            if (this.value) {
+                if (this.value.includes("Custom Note")) {
+                    messageInput.value = "";
+                    messageInput.placeholder = "Type your custom message here...";
+                } else {
+                    messageInput.value = this.value;
+                }
+                messageInput.focus();
+            }
+        });
 
         document.getElementById('messageForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const messageInput = document.getElementById('message');
-            const statusText = document.getElementById('status');
-            const message = messageInput.value.trim();
+            const rawMessage = messageInput.value.trim();
+            const contact = contactInput.value.trim();
             
-            if (!message) return;
+            if (!rawMessage) return;
+
+            const finalPayload = contact 
+                ? `${rawMessage}\n\n📞 Sender Contact: ${contact}` 
+                : rawMessage;
             
-            statusText.style.color = '#0088cc';
-            statusText.innerText = 'Sending message...';
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Transmitting...';
+            statusText.style.color = '#ff6b00';
+            statusText.innerText = 'Sending alert to Thar owner...';
 
             try {
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: message })
+                    body: JSON.stringify({ message: finalPayload })
                 });
 
-                statusText.style.color = 'green';
-                statusText.innerText = 'Message sent successfully! Owner notified.';
+                statusText.style.color = '#10b981';
+                statusText.innerText = '✓ Alert Delivered Successfully!';
                 messageInput.value = '';
+                contactInput.value = '';
+                quickReason.selectedIndex = 0;
 
             } catch (error) {
                 console.error("Network Error:", error);
-                statusText.style.color = 'red';
-                statusText.innerText = 'Connection error. Please try again.';
+                statusText.style.color = '#ef4444';
+                statusText.innerText = '✕ Connection failed. Try again.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Transmit Alert';
             }
         });
     </script>
