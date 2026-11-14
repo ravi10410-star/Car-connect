@@ -1,63 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Car Owner</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; text-align: center; }
-        form { max-width: 300px; margin: 0 auto; }
-        textarea { width: 100%; height: 100px; margin-bottom: 10px; }
-        button { padding: 10px 20px; background-color: #0088cc; color: white; border: none; cursor: pointer; }
-    </style>
-</head>
-<body>
+<script>
+    // Paste your complete Web App URL here
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyqLxtmD2t6FX9ZPxNlhS3cwyMS5f4b8XSPch15WAC3hCzM06rqfGww8gBI02J7-SQ/exec';
 
-    <h2>Send a Message to the Car Owner</h2>
-    <form id="messageForm">
-        <textarea id="message" placeholder="Type your message here..." required></textarea>
-        <br>
-        <button type="submit">Send Message</button>
-    </form>
+    document.getElementById('messageForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const message = document.getElementById('message').value;
+        const statusText = document.getElementById('status');
+        
+        statusText.innerText = 'Sending message...';
 
-    <p id="status"></p>
+        try {
+            const response = await fetch(WEB_APP_URL, {
+                method: 'POST',
+                body: JSON.stringify({ message: message })
+            });
 
-    <script>
-        // YOUR TELEGRAM DETAILS
-        const BOT_TOKEN = '9126194997:AAGkzFvSpRqUqEwcCil0VSzizXxgT7ka-p8';
-        const CHAT_ID = '8578161903';
+            const result = await response.json();
 
-        document.getElementById('messageForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            alert('Button Clicked! Sending message...');
-            
-            const message = document.getElementById('message').value;
-            const statusText = document.getElementById('status');
-            
-            statusText.innerText = 'Sending...';
-            console.log("Attempting to send message:", message);
-
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-            
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: `🚗 New message from your car QR code:\n\n${message}`
-                    })
-                });
-
-                console.log("Response status:", response.status);
-
-                if (response.ok) {
-                    statusText.innerText = 'Message sent successfully!';
-                    document.getElementById('message').value = '';
-                    alert('Success! Message sent to Telegram.');
-                } else {
-                    const errorData = await response.json();
-                    console.log("Telegram Error:", errorData);
-                    statusText.innerText = 'Error sending message.';
-                    alert('Error: ' + (errorData.description ||
+            if (result.status === 'success') {
+                statusText.innerText = 'Message sent successfully!';
+                document.getElementById('message').value = '';
+            } else {
+                statusText.innerText = 'Failed to send message.';
+                console.error("Error:", result.message);
+            }
+        } catch (error) {
+            console.error("Network Error:", error);
+            statusText.innerText = 'Connection error. Please try again.';
+        }
+    });
+</script>
